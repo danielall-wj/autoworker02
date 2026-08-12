@@ -108,6 +108,43 @@
     margin-bottom: 32px;
   }
 
+  .header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .header-text { min-width: 0; }
+
+  .theme-toggle {
+    appearance: none;
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--ink-700);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+  .theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .theme-toggle svg { width: 17px; height: 17px; }
+  .theme-toggle .icon-moon { display: none; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .theme-toggle .icon-sun { display: none; }
+    :root:not([data-theme="light"]) .theme-toggle .icon-moon { display: block; }
+  }
+  :root[data-theme="dark"] .theme-toggle .icon-sun { display: none; }
+  :root[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
+  :root[data-theme="light"] .theme-toggle .icon-sun { display: block; }
+  :root[data-theme="light"] .theme-toggle .icon-moon { display: none; }
+
   .eyebrow {
     font-family: ui-monospace, "SF Mono", "Menlo", monospace;
     font-size: 12px;
@@ -156,6 +193,64 @@
   }
   .source-link:hover { border-bottom-color: var(--accent); }
   .source-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+  /* ---------- search ---------- */
+
+  .search-block {
+    margin-bottom: 24px;
+  }
+
+  .search-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    width: 15px;
+    height: 15px;
+    color: var(--ink-500);
+    pointer-events: none;
+  }
+
+  .search-input {
+    width: 100%;
+    font: inherit;
+    font-size: 14px;
+    color: var(--ink-900);
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    padding: 11px 40px 11px 38px;
+  }
+  .search-input::placeholder { color: var(--ink-500); }
+  .search-input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .search-clear {
+    position: absolute;
+    right: 8px;
+    appearance: none;
+    border: none;
+    background: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    color: var(--ink-500);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .search-clear:hover { background: var(--surface-2); color: var(--ink-900); }
+  .search-clear:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .search-hint {
+    margin: 8px 2px 0;
+    font-size: 12.5px;
+    color: var(--ink-500);
+  }
+  .search-hint b { color: var(--ink-900); font-weight: 600; }
 
   /* ---------- stat bar ---------- */
 
@@ -350,9 +445,9 @@
     border-radius: 5px;
     margin-bottom: 8px;
   }
-  [data-major="production"] .sub-chip { background: var(--accent-tint); color: var(--accent); }
-  [data-major="tools"] .sub-chip { background: var(--accent-2-tint); color: var(--accent-2); }
-  [data-major="ops"] .sub-chip { background: var(--accent-3-tint); color: var(--accent-3); }
+  .card[data-major="production"] .sub-chip { background: var(--accent-tint); color: var(--accent); }
+  .card[data-major="tools"] .sub-chip { background: var(--accent-2-tint); color: var(--accent-2); }
+  .card[data-major="ops"] .sub-chip { background: var(--accent-3-tint); color: var(--accent-3); }
 
   .card .q {
     font-size: 15px;
@@ -367,6 +462,24 @@
     color: var(--ink-700);
     margin: 0;
   }
+
+  .term-link {
+    appearance: none;
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    font-weight: inherit;
+    color: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 2px;
+  }
+  .term-link:hover { color: var(--accent); }
+  .term-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
 
   .empty {
     padding: 40px 20px;
@@ -448,7 +561,12 @@
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 14px 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
+
+  .glossary-group[data-major="production"] .glossary-grid > div.term-highlight { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-tint-strong); }
+  .glossary-group[data-major="tools"] .glossary-grid > div.term-highlight { border-color: var(--accent-2); box-shadow: 0 0 0 3px var(--accent-2-tint-strong); }
+  .glossary-group[data-major="ops"] .glossary-grid > div.term-highlight { border-color: var(--accent-3); box-shadow: 0 0 0 3px var(--accent-3-tint-strong); }
 
   .glossary-grid dt {
     display: flex;
@@ -512,13 +630,30 @@
 
 <div class="page">
   <header>
-    <div class="eyebrow"><span class="dot"></span>REFERENCE · 2026.08.05 – 08.12</div>
-    <h1>오토워커 Q&amp;A 정리</h1>
-    <p class="subtitle">오토워커 2기 사담방에 올라온 32건의 질의응답을 대분류 3개 · 하위 카테고리 8개로 정리했습니다. 상위 탭에서 영역을 고른 뒤, 하위 탭으로 더 좁혀 보세요. 각 항목은 최신 날짜순으로 정렬됩니다.</p>
-    <a class="source-link" href="https://krroki.github.io/autoworker-digest/g/3ee7ded52cae4f10.html" target="_blank" rel="noopener">
-      원문 다이제스트 보기 ↗
-    </a>
+    <div class="header-row">
+      <div class="header-text">
+        <div class="eyebrow"><span class="dot"></span>REFERENCE · 2026.08.05 – 08.12</div>
+        <h1>오토워커 Q&amp;A 정리</h1>
+        <p class="subtitle">오토워커 2기 사담방에 올라온 질의응답을 대분류 3개 · 하위 카테고리 8개로 정리했습니다. 상위 탭에서 영역을 고른 뒤, 하위 탭으로 더 좁혀 보세요. 각 항목은 최신 날짜순으로 정렬됩니다.</p>
+        <a class="source-link" href="https://krroki.github.io/autoworker-digest/g/3ee7ded52cae4f10.html" target="_blank" rel="noopener">
+          원문 다이제스트 보기 ↗
+        </a>
+      </div>
+      <button type="button" class="theme-toggle" id="themeToggle" aria-label="라이트/다크 모드 전환">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.5v2.4M12 19.1v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7"></path></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5Z"></path></svg>
+      </button>
+    </div>
   </header>
+
+  <div class="search-block">
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
+      <input type="search" class="search-input" placeholder="검색: 캡컷, 인증코드, 애드센스…" aria-label="Q&A 및 용어 검색">
+      <button type="button" class="search-clear" hidden aria-label="검색어 지우기">×</button>
+    </div>
+    <p class="search-hint" hidden></p>
+  </div>
 
   <div class="stat-block">
     <div class="stat-header">
@@ -631,21 +766,112 @@
   };
 
   var GLOSSARY = [
-    { major: "production", term: "Pexels API", desc: "무료 사진·영상을 자동으로 가져다 쓸 수 있게 해주는 '출입증' 같은 코드예요. 영상 제작 시 배경 이미지·클립을 자동으로 불러올 때 사용합니다." },
-    { major: "production", term: "캡컷 Resources 폴더", desc: "캡컷(CapCut)에서 영상 프로젝트를 만들면 자동으로 생기는 폴더로, 그 안에 이미지·음성 같은 원본 파일들이 저장돼요. 자동화 도구와 캡컷을 연결할 때 이 폴더 경로를 지정해줘야 합니다." },
-    { major: "tools", term: "VSCode", desc: "코드를 작성하고 편집할 때 쓰는 프로그램(에디터)이에요. 확장 프로그램을 설치하면 더 편하게 쓸 수 있지만, 없어도 과제 진행은 가능합니다." },
-    { major: "ops", term: "VPN", desc: "내 인터넷 연결을 다른 지역의 서버를 거쳐 우회시켜주는 프로그램이에요. 오토워커에서는 계정 차단의 주요 원인이라 사용을 금지하고 있습니다." },
-    { major: "ops", term: "애드센스 (Google AdSense)", desc: "내 유튜브 영상에 광고를 붙여 수익을 낼 수 있게 해주는 구글의 서비스예요. 심사를 통과해야 광고 수익이 발생하기 시작합니다." },
-    { major: "ops", term: "vidIQ", desc: "유튜브 영상의 예상 조회수·수익 등을 분석해주는 외부 도구예요." }
+    { major: "production", id: "pexels-api", term: "Pexels API", aliases: ["Pexels API"], desc: "무료 사진·영상을 자동으로 가져다 쓸 수 있게 해주는 '출입증' 같은 코드예요. 영상 제작 시 배경 이미지·클립을 자동으로 불러올 때 사용합니다." },
+    { major: "production", id: "capcut-resources", term: "캡컷 Resources 폴더", aliases: ["Resources 폴더"], desc: "캡컷(CapCut)에서 영상 프로젝트를 만들면 자동으로 생기는 폴더로, 그 안에 이미지·음성 같은 원본 파일들이 저장돼요. 자동화 도구와 캡컷을 연결할 때 이 폴더 경로를 지정해줘야 합니다." },
+    { major: "tools", id: "vscode", term: "VSCode", aliases: ["VSCode"], desc: "코드를 작성하고 편집할 때 쓰는 프로그램(에디터)이에요. 확장 프로그램을 설치하면 더 편하게 쓸 수 있지만, 없어도 과제 진행은 가능합니다." },
+    { major: "ops", id: "vpn", term: "VPN", aliases: ["VPN"], desc: "내 인터넷 연결을 다른 지역의 서버를 거쳐 우회시켜주는 프로그램이에요. 오토워커에서는 계정 차단의 주요 원인이라 사용을 금지하고 있습니다." },
+    { major: "ops", id: "adsense", term: "애드센스 (Google AdSense)", aliases: ["애드센스"], desc: "내 유튜브 영상에 광고를 붙여 수익을 낼 수 있게 해주는 구글의 서비스예요. 심사를 통과해야 광고 수익이 발생하기 시작합니다." },
+    { major: "ops", id: "vidiq", term: "vidIQ", aliases: ["vidIQ"], desc: "유튜브 영상의 예상 조회수·수익 등을 분석해주는 외부 도구예요." }
   ];
 
-  var state = { major: "production", sub: "all" };
+  var state = { major: "production", sub: "all", query: "" };
 
   var majorTabsEl = document.querySelector(".tabs-major");
   var subTabsEl = document.querySelector(".tabs-sub");
   var listEl = document.querySelector(".list");
   var panelEl = document.querySelector(".panel");
   var glossaryEl = document.querySelector(".glossary-list");
+  var searchInputEl = document.querySelector(".search-input");
+  var searchClearEl = document.querySelector(".search-clear");
+  var searchHintEl = document.querySelector(".search-hint");
+  var themeToggleEl = document.getElementById("themeToggle");
+
+  /* ---------- theme ---------- */
+
+  (function initTheme() {
+    try {
+      var saved = localStorage.getItem("awq-theme");
+      if (saved === "dark" || saved === "light") {
+        document.documentElement.setAttribute("data-theme", saved);
+      }
+    } catch (e) {}
+  })();
+
+  themeToggleEl.addEventListener("click", function () {
+    var root = document.documentElement;
+    var current = root.getAttribute("data-theme");
+    var systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var effective = current || (systemDark ? "dark" : "light");
+    var next = effective === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("awq-theme", next); } catch (e) {}
+  });
+
+  /* ---------- term linking ---------- */
+
+  function escapeRegExp(s) {
+    return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+
+  var ALIAS_MAP = {};
+  var aliasList = [];
+  GLOSSARY.forEach(function (g) {
+    (g.aliases || [g.term]).forEach(function (a) {
+      ALIAS_MAP[a] = g.id;
+      aliasList.push(a);
+    });
+  });
+  aliasList.sort(function (a, b) { return b.length - a.length; });
+  var TERM_REGEX = aliasList.length ? new RegExp(aliasList.map(escapeRegExp).join("|"), "g") : null;
+
+  function linkify(text) {
+    if (!TERM_REGEX) return text;
+    return text.replace(TERM_REGEX, function (m) {
+      return '<button type="button" class="term-link" data-term-id="' + ALIAS_MAP[m] + '">' + m + "</button>";
+    });
+  }
+
+  function scrollToTerm(id) {
+    var el = document.getElementById("term-" + id);
+    if (!el && searchInputEl.value) {
+      searchInputEl.value = "";
+      state.query = "";
+      searchClearEl.hidden = true;
+      renderAll();
+      el = document.getElementById("term-" + id);
+    }
+    if (!el) return;
+    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+    el.classList.add("term-highlight");
+    setTimeout(function () { el.classList.remove("term-highlight"); }, 1600);
+  }
+
+  listEl.addEventListener("click", function (e) {
+    var btn = e.target.closest(".term-link");
+    if (!btn) return;
+    scrollToTerm(btn.getAttribute("data-term-id"));
+  });
+
+  /* ---------- search ---------- */
+
+  function isSearching() {
+    return state.query.trim().length > 0;
+  }
+
+  searchInputEl.addEventListener("input", function () {
+    state.query = this.value;
+    searchClearEl.hidden = !state.query;
+    renderAll();
+  });
+
+  searchClearEl.addEventListener("click", function () {
+    state.query = "";
+    searchInputEl.value = "";
+    searchClearEl.hidden = true;
+    renderAll();
+    searchInputEl.focus();
+  });
 
   function countFor(major, sub) {
     return DATA.filter(function (d) {
@@ -705,23 +931,45 @@
     return found ? found.label : subKey;
   }
 
+  function majorLabel(major) {
+    var found = MAJORS.find(function (m) { return m.key === major; });
+    return found ? found.label : major;
+  }
+
   function dateValue(dateStr) {
     var parts = dateStr.split("/");
     return parseInt(parts[0], 10) * 100 + parseInt(parts[1], 10);
   }
 
-  function renderList() {
-    var items = DATA.filter(function (d) {
-      return d.major === state.major && (state.sub === "all" || d.sub === state.sub);
-    }).sort(function (a, b) {
+  function matchingQaItems() {
+    var query = state.query.trim().toLowerCase();
+    var items;
+    if (query) {
+      items = DATA.filter(function (d) {
+        return d.q.toLowerCase().indexOf(query) !== -1 ||
+          d.a.toLowerCase().indexOf(query) !== -1 ||
+          subLabel(d.major, d.sub).toLowerCase().indexOf(query) !== -1 ||
+          majorLabel(d.major).toLowerCase().indexOf(query) !== -1;
+      });
+    } else {
+      items = DATA.filter(function (d) {
+        return d.major === state.major && (state.sub === "all" || d.sub === state.sub);
+      });
+    }
+    return items.slice().sort(function (a, b) {
       return dateValue(b.date) - dateValue(a.date);
     });
+  }
+
+  function renderList() {
+    var query = isSearching();
+    var items = matchingQaItems();
 
     listEl.innerHTML = "";
     if (items.length === 0) {
       var empty = document.createElement("div");
       empty.className = "empty";
-      empty.textContent = "해당 카테고리에 항목이 없습니다.";
+      empty.textContent = query ? "검색 결과가 없습니다." : "해당 카테고리에 항목이 없습니다.";
       listEl.appendChild(empty);
       return;
     }
@@ -729,22 +977,36 @@
     items.forEach(function (item) {
       var card = document.createElement("article");
       card.className = "card";
+      card.setAttribute("data-major", item.major);
+      var chipText = query ? (majorLabel(item.major) + " · " + subLabel(item.major, item.sub)) : subLabel(item.major, item.sub);
       card.innerHTML =
         '<div class="date mono">' + item.date + '</div>' +
         '<div class="body">' +
-        '<span class="sub-chip">' + subLabel(item.major, item.sub) + '</span>' +
-        '<p class="q">' + item.q + '</p>' +
-        '<p class="a">' + item.a + '</p>' +
+        '<span class="sub-chip">' + chipText + '</span>' +
+        '<p class="q">' + linkify(item.q) + '</p>' +
+        '<p class="a">' + linkify(item.a) + '</p>' +
         '</div>';
       listEl.appendChild(card);
     });
   }
 
+  function matchingGlossaryTerms(majorKey) {
+    var query = state.query.trim().toLowerCase();
+    return GLOSSARY.filter(function (g) {
+      if (g.major !== majorKey) return false;
+      if (!query) return true;
+      return g.term.toLowerCase().indexOf(query) !== -1 || g.desc.toLowerCase().indexOf(query) !== -1;
+    });
+  }
+
   function renderGlossary() {
     glossaryEl.innerHTML = "";
+    var totalShown = 0;
+
     MAJORS.forEach(function (m) {
-      var terms = GLOSSARY.filter(function (g) { return g.major === m.key; });
+      var terms = matchingGlossaryTerms(m.key);
       if (terms.length === 0) return;
+      totalShown += terms.length;
 
       var group = document.createElement("div");
       group.className = "glossary-group";
@@ -759,6 +1021,7 @@
       grid.className = "glossary-grid";
       terms.forEach(function (g) {
         var wrap = document.createElement("div");
+        wrap.id = "term-" + g.id;
         var dt = document.createElement("dt");
         dt.textContent = g.term;
         var dd = document.createElement("dd");
@@ -771,14 +1034,36 @@
 
       glossaryEl.appendChild(group);
     });
+
+    if (isSearching() && totalShown === 0) {
+      var empty = document.createElement("p");
+      empty.className = "empty";
+      empty.textContent = "일치하는 용어가 없습니다.";
+      glossaryEl.appendChild(empty);
+    }
+
+    return totalShown;
   }
 
   function renderAll() {
+    var searching = isSearching();
+
+    majorTabsEl.style.display = searching ? "none" : "";
+    subTabsEl.style.display = searching ? "none" : "";
+
     renderMajorTabs();
     renderSubTabs();
     renderList();
+    var termCount = renderGlossary();
+
+    if (searching) {
+      var qaCount = matchingQaItems().length;
+      searchHintEl.innerHTML = '"' + state.query.trim() + '" 검색 결과 — Q&amp;A <b class="mono">' + qaCount + '</b>건 · 용어 <b class="mono">' + termCount + '</b>개 (전체 카테고리 대상)';
+      searchHintEl.hidden = false;
+    } else {
+      searchHintEl.hidden = true;
+    }
   }
 
   renderAll();
-  renderGlossary();
 </script>
