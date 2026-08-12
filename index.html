@@ -404,20 +404,53 @@
   }
 
   .glossary-list {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .glossary-group-heading {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-700);
+    margin-bottom: 10px;
+  }
+
+  .glossary-group-heading .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex: none;
+  }
+
+  .glossary-group-heading .count {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-500);
+  }
+
+  .glossary-group[data-major="production"] .glossary-group-heading .dot { background: var(--accent); }
+  .glossary-group[data-major="tools"] .glossary-group-heading .dot { background: var(--accent-2); }
+  .glossary-group[data-major="ops"] .glossary-group-heading .dot { background: var(--accent-3); }
+
+  .glossary-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
     margin: 0;
   }
 
-  .glossary-list > div {
+  .glossary-grid > div {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 14px 16px;
   }
 
-  .glossary-list dt {
+  .glossary-grid dt {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -427,16 +460,19 @@
     margin-bottom: 6px;
   }
 
-  .glossary-list dt::before {
+  .glossary-group[data-major="production"] .glossary-grid dt::before { background: var(--accent); }
+  .glossary-group[data-major="tools"] .glossary-grid dt::before { background: var(--accent-2); }
+  .glossary-group[data-major="ops"] .glossary-grid dt::before { background: var(--accent-3); }
+
+  .glossary-grid dt::before {
     content: "";
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--accent);
     flex: none;
   }
 
-  .glossary-list dd {
+  .glossary-grid dd {
     margin: 0;
     font-size: 13.5px;
     line-height: 1.55;
@@ -444,7 +480,7 @@
   }
 
   @media (max-width: 700px) {
-    .glossary-list { grid-template-columns: 1fr; }
+    .glossary-grid { grid-template-columns: 1fr; }
   }
 
   .glossary-note {
@@ -513,7 +549,7 @@
       <h2>왕초보를 위한 용어 정리</h2>
       <p class="subtitle">Q&amp;A에 자주 나오지만 낯설 수 있는 단어를 한두 줄로 풀어드립니다.</p>
     </div>
-    <dl class="glossary-list"></dl>
+    <div class="glossary-list"></div>
     <p class="glossary-note">일부 기본 용어 설명은 Claude(AI)의 도움을 받아 작성되었습니다.</p>
   </section>
 
@@ -595,9 +631,9 @@
   };
 
   var GLOSSARY = [
-    { term: "VPN", desc: "내 인터넷 연결을 다른 지역의 서버를 거쳐 우회시켜주는 프로그램이에요. 오토워커에서는 계정 차단의 주요 원인이라 사용을 금지하고 있습니다." },
-    { term: "Pexels API", desc: "무료 사진·영상을 자동으로 가져다 쓸 수 있게 해주는 '출입증' 같은 코드예요. 영상 제작 시 배경 이미지·클립을 자동으로 불러올 때 사용합니다." },
-    { term: "VSCode", desc: "코드를 작성하고 편집할 때 쓰는 프로그램(에디터)이에요. 확장 프로그램을 설치하면 더 편하게 쓸 수 있지만, 없어도 과제 진행은 가능합니다." }
+    { major: "production", term: "Pexels API", desc: "무료 사진·영상을 자동으로 가져다 쓸 수 있게 해주는 '출입증' 같은 코드예요. 영상 제작 시 배경 이미지·클립을 자동으로 불러올 때 사용합니다." },
+    { major: "tools", term: "VSCode", desc: "코드를 작성하고 편집할 때 쓰는 프로그램(에디터)이에요. 확장 프로그램을 설치하면 더 편하게 쓸 수 있지만, 없어도 과제 진행은 가능합니다." },
+    { major: "ops", term: "VPN", desc: "내 인터넷 연결을 다른 지역의 서버를 거쳐 우회시켜주는 프로그램이에요. 오토워커에서는 계정 차단의 주요 원인이라 사용을 금지하고 있습니다." }
   ];
 
   var state = { major: "production", sub: "all" };
@@ -703,15 +739,34 @@
 
   function renderGlossary() {
     glossaryEl.innerHTML = "";
-    GLOSSARY.forEach(function (g) {
-      var wrap = document.createElement("div");
-      var dt = document.createElement("dt");
-      dt.textContent = g.term;
-      var dd = document.createElement("dd");
-      dd.textContent = g.desc;
-      wrap.appendChild(dt);
-      wrap.appendChild(dd);
-      glossaryEl.appendChild(wrap);
+    MAJORS.forEach(function (m) {
+      var terms = GLOSSARY.filter(function (g) { return g.major === m.key; });
+      if (terms.length === 0) return;
+
+      var group = document.createElement("div");
+      group.className = "glossary-group";
+      group.setAttribute("data-major", m.key);
+
+      var heading = document.createElement("div");
+      heading.className = "glossary-group-heading";
+      heading.innerHTML = '<span class="dot"></span>' + m.label + ' <span class="count mono">' + terms.length + '</span>';
+      group.appendChild(heading);
+
+      var grid = document.createElement("dl");
+      grid.className = "glossary-grid";
+      terms.forEach(function (g) {
+        var wrap = document.createElement("div");
+        var dt = document.createElement("dt");
+        dt.textContent = g.term;
+        var dd = document.createElement("dd");
+        dd.textContent = g.desc;
+        wrap.appendChild(dt);
+        wrap.appendChild(dd);
+        grid.appendChild(wrap);
+      });
+      group.appendChild(grid);
+
+      glossaryEl.appendChild(group);
     });
   }
 
