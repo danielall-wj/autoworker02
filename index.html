@@ -1,0 +1,616 @@
+<title>오토워커 Q&A 정리</title>
+<style>
+  :root {
+    --bg: #EDEDE4;
+    --surface: #FAFAF4;
+    --surface-2: #F2F1E8;
+    --ink-900: #1E241F;
+    --ink-700: #3C443C;
+    --ink-500: #6B715F;
+    --border: #D8D6C8;
+    --border-strong: #C3C1B0;
+
+    --accent: #1F6E6B;
+    --accent-ink: #FFFFFF;
+    --accent-tint: rgba(31, 110, 107, 0.10);
+    --accent-tint-strong: rgba(31, 110, 107, 0.18);
+
+    --accent-2: #5B4B8A;
+    --accent-2-tint: rgba(91, 75, 138, 0.10);
+    --accent-2-tint-strong: rgba(91, 75, 138, 0.18);
+
+    --accent-3: #A6741C;
+    --accent-3-tint: rgba(166, 116, 28, 0.10);
+    --accent-3-tint-strong: rgba(166, 116, 28, 0.18);
+
+    --shadow: 0 1px 2px rgba(30, 36, 31, 0.06), 0 2px 8px rgba(30, 36, 31, 0.04);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14181A;
+      --surface: #1C2123;
+      --surface-2: #20272A;
+      --ink-900: #ECEAE2;
+      --ink-700: #C7C6BC;
+      --ink-500: #8B9089;
+      --border: #333B3C;
+      --border-strong: #454F50;
+
+      --accent: #4FB8AE;
+      --accent-ink: #0E1516;
+      --accent-tint: rgba(79, 184, 174, 0.14);
+      --accent-tint-strong: rgba(79, 184, 174, 0.24);
+
+      --accent-2: #A594E0;
+      --accent-2-tint: rgba(165, 148, 224, 0.14);
+      --accent-2-tint-strong: rgba(165, 148, 224, 0.24);
+
+      --accent-3: #D6A94A;
+      --accent-3-tint: rgba(214, 169, 74, 0.14);
+      --accent-3-tint-strong: rgba(214, 169, 74, 0.24);
+
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #14181A;
+    --surface: #1C2123;
+    --surface-2: #20272A;
+    --ink-900: #ECEAE2;
+    --ink-700: #C7C6BC;
+    --ink-500: #8B9089;
+    --border: #333B3C;
+    --border-strong: #454F50;
+
+    --accent: #4FB8AE;
+    --accent-ink: #0E1516;
+    --accent-tint: rgba(79, 184, 174, 0.14);
+    --accent-tint-strong: rgba(79, 184, 174, 0.24);
+
+    --accent-2: #A594E0;
+    --accent-2-tint: rgba(165, 148, 224, 0.14);
+    --accent-2-tint-strong: rgba(165, 148, 224, 0.24);
+
+    --accent-3: #D6A94A;
+    --accent-3-tint: rgba(214, 169, 74, 0.14);
+    --accent-3-tint-strong: rgba(214, 169, 74, 0.24);
+
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.25);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink-900);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Pretendard", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .mono {
+    font-family: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* ---------- header ---------- */
+
+  header {
+    margin-bottom: 32px;
+  }
+
+  .eyebrow {
+    font-family: ui-monospace, "SF Mono", "Menlo", monospace;
+    font-size: 12px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-500);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .eyebrow .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex: none;
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+    text-wrap: balance;
+    color: var(--ink-900);
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: var(--ink-700);
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .source-link:hover { border-bottom-color: var(--accent); }
+  .source-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+  /* ---------- stat bar ---------- */
+
+  .stat-block {
+    margin-bottom: 36px;
+  }
+
+  .stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+
+  .stat-header .label {
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-500);
+  }
+
+  .stat-header .total {
+    font-size: 13px;
+    color: var(--ink-700);
+  }
+  .stat-header .total b { color: var(--ink-900); }
+
+  .stat-bar {
+    display: flex;
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .stat-bar span { display: block; height: 100%; }
+  .stat-bar .seg-production { background: var(--accent); }
+  .stat-bar .seg-tools { background: var(--accent-2); }
+  .stat-bar .seg-ops { background: var(--accent-3); }
+
+  .stat-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--ink-700);
+  }
+
+  .stat-legend .item { display: flex; align-items: center; gap: 6px; }
+  .stat-legend .swatch { width: 8px; height: 8px; border-radius: 2px; flex: none; }
+  .stat-legend .swatch.production { background: var(--accent); }
+  .stat-legend .swatch.tools { background: var(--accent-2); }
+  .stat-legend .swatch.ops { background: var(--accent-3); }
+  .stat-legend b.mono { color: var(--ink-900); font-weight: 600; }
+
+  /* ---------- major tabs (folder tabs) ---------- */
+
+  .tabs-major {
+    display: flex;
+    gap: 4px;
+    padding: 0 4px;
+  }
+
+  .tab-major {
+    appearance: none;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    background: var(--surface-2);
+    color: var(--ink-500);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 18px 10px;
+    border-radius: 10px 10px 0 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    top: 1px;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+
+  .tab-major .count {
+    font-family: ui-monospace, "SF Mono", monospace;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: var(--border);
+    color: var(--ink-700);
+  }
+
+  .tab-major:hover { color: var(--ink-900); }
+  .tab-major:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .tab-major[aria-selected="true"] {
+    background: var(--surface);
+    color: var(--ink-900);
+    border-color: var(--border-strong);
+  }
+
+  .tab-major[data-major="production"][aria-selected="true"] { box-shadow: inset 0 3px 0 var(--accent); }
+  .tab-major[data-major="tools"][aria-selected="true"] { box-shadow: inset 0 3px 0 var(--accent-2); }
+  .tab-major[data-major="ops"][aria-selected="true"] { box-shadow: inset 0 3px 0 var(--accent-3); }
+
+  .tab-major[data-major="production"][aria-selected="true"] .count { background: var(--accent-tint-strong); color: var(--accent); }
+  .tab-major[data-major="tools"][aria-selected="true"] .count { background: var(--accent-2-tint-strong); color: var(--accent-2); }
+  .tab-major[data-major="ops"][aria-selected="true"] .count { background: var(--accent-3-tint-strong); color: var(--accent-3); }
+
+  /* ---------- panel ---------- */
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 0 10px 10px 10px;
+    box-shadow: var(--shadow);
+  }
+
+  .tabs-sub {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tab-sub {
+    appearance: none;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--ink-700);
+    font: inherit;
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+  }
+
+  .tab-sub .count {
+    font-family: ui-monospace, "SF Mono", monospace;
+    font-size: 11px;
+    color: var(--ink-500);
+  }
+
+  .tab-sub:hover { border-color: var(--border-strong); }
+  .tab-sub:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .tab-sub[aria-selected="true"] { color: var(--accent-ink); border-color: transparent; }
+  [data-major="production"] .tab-sub[aria-selected="true"] { background: var(--accent); }
+  [data-major="tools"] .tab-sub[aria-selected="true"] { background: var(--accent-2); }
+  [data-major="ops"] .tab-sub[aria-selected="true"] { background: var(--accent-3); }
+  .tab-sub[aria-selected="true"] .count { color: inherit; opacity: 0.85; }
+
+  /* ---------- cards ---------- */
+
+  .list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 16px;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card:last-child { border-bottom: none; }
+
+  .card .date {
+    font-family: ui-monospace, "SF Mono", monospace;
+    font-size: 12px;
+    color: var(--ink-500);
+    padding-top: 2px;
+  }
+
+  .card .body { min-width: 0; }
+
+  .card .sub-chip {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 2px 8px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+  }
+  [data-major="production"] .sub-chip { background: var(--accent-tint); color: var(--accent); }
+  [data-major="tools"] .sub-chip { background: var(--accent-2-tint); color: var(--accent-2); }
+  [data-major="ops"] .sub-chip { background: var(--accent-3-tint); color: var(--accent-3); }
+
+  .card .q {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink-900);
+    margin: 0 0 4px;
+    text-wrap: balance;
+  }
+
+  .card .a {
+    font-size: 14px;
+    color: var(--ink-700);
+    margin: 0;
+  }
+
+  .empty {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--ink-500);
+    font-size: 14px;
+  }
+
+  footer {
+    margin-top: 28px;
+    font-size: 12.5px;
+    color: var(--ink-500);
+    text-align: center;
+  }
+
+  @media (max-width: 560px) {
+    .page { padding: 32px 16px 64px; }
+    h1 { font-size: 23px; }
+    .tabs-major { overflow-x: auto; }
+    .tab-major { flex: none; }
+    .card { grid-template-columns: 1fr; gap: 4px; }
+    .card .date { order: -1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+
+<div class="page">
+  <header>
+    <div class="eyebrow"><span class="dot"></span>REFERENCE · 2026.08.05 – 08.12</div>
+    <h1>오토워커 Q&amp;A 정리</h1>
+    <p class="subtitle">오토워커 2기 사담방에 올라온 32건의 질의응답을 대분류 3개 · 하위 카테고리 8개로 정리했습니다. 상위 탭에서 영역을 고른 뒤, 하위 탭으로 더 좁혀 보세요. 각 항목은 최신 날짜순으로 정렬됩니다.</p>
+    <a class="source-link" href="https://krroki.github.io/autoworker-digest/g/3ee7ded52cae4f10.html" target="_blank" rel="noopener">
+      원문 다이제스트 보기 ↗
+    </a>
+  </header>
+
+  <div class="stat-block">
+    <div class="stat-header">
+      <span class="label">분류 비중</span>
+      <span class="total">총 <b class="mono">32</b>건</span>
+    </div>
+    <div class="stat-bar">
+      <span class="seg-production" style="width:50%"></span>
+      <span class="seg-tools" style="width:21.875%"></span>
+      <span class="seg-ops" style="width:28.125%"></span>
+    </div>
+    <div class="stat-legend">
+      <span class="item"><span class="swatch production"></span>콘텐츠 제작 <b class="mono">16</b></span>
+      <span class="item"><span class="swatch tools"></span>AI·자동화 도구 <b class="mono">7</b></span>
+      <span class="item"><span class="swatch ops"></span>계정·운영·수익화 <b class="mono">9</b></span>
+    </div>
+  </div>
+
+  <nav class="tabs-major" role="tablist" aria-label="대분류"></nav>
+  <section class="panel">
+    <div class="tabs-sub" role="tablist" aria-label="하위 카테고리"></div>
+    <div class="list"></div>
+  </section>
+
+  <footer>카테고리 분류는 자체 정리 기준이며, 원문은 날짜순으로 게시되어 있습니다.</footer>
+</div>
+
+<script>
+  var DATA = [
+    // 콘텐츠 제작 · 캡컷 연동·오류
+    { major: "production", sub: "capcut", date: "8/11", q: "캡컷 프로젝트 폴더명에 한글이 있으면", a: "한글을 제거하고 다시 시도하면 정상 인식됩니다." },
+    { major: "production", sub: "capcut", date: "8/11", q: "압축 해제한 캡컷 프로젝트 폴더 구조가 이상해요", a: "압축 해제 시 폴더가 중복 생성되는 경우가 있어 구조 확인이 필요합니다." },
+    { major: "production", sub: "capcut", date: "8/11", q: "캡컷 경로를 어디로 맞춰야 하나요", a: "압축 해제된 폴더를 정확한 위치로 옮겨야 인식됩니다." },
+    { major: "production", sub: "capcut", date: "8/11", q: "캡컷 Resources 폴더는 어떻게 연결하나요", a: "캡컷에서 만든 영상 폴더 안의 Resources 폴더를 열어주면 됩니다." },
+    { major: "production", sub: "capcut", date: "8/10", q: "캡컷 연결 시 이미지·음성이 채워지지 않아요", a: "해당 폴더를 캡컷 경로 안에 넣는 방식으로 연결해야 합니다." },
+    { major: "production", sub: "capcut", date: "8/8", q: "캡컷이 프로젝트를 인식하지 못해요", a: "폴더 구조를 확인하고 중간 단계 폴더를 한 단계 제거해야 합니다." },
+    { major: "production", sub: "capcut", date: "8/8", q: "캡컷에서 미디어 연결 오류가 나요", a: "png 파일을 드래프트 폴더로 복사하거나 미디어 연결 버튼을 사용하면 해결됩니다." },
+
+    // 콘텐츠 제작 · 대본·이미지·영상 제작
+    { major: "production", sub: "script", date: "8/12", q: "캐릭터 실험 넣었더니 이상해요", a: "모든 장면에 등장하며 스타일이 불일치하고, 제거 설정이 까다롭습니다." },
+    { major: "production", sub: "script", date: "8/11", q: "실사 스타일인데 공룡이 나와요", a: "공룡을 선택하지 않으면 다른 스타일로 진행할 수 있습니다." },
+    { major: "production", sub: "script", date: "8/11", q: "이미지 프롬프트를 수정하고 싶어요", a: "커스텀 스타일로 지정해 flow에서 다시 작업할 수 있습니다." },
+    { major: "production", sub: "script", date: "8/10", q: "자막 글자수 설정이 매번 달라요", a: "문맥에 따라 변동되며, 조교가 재확인 중입니다." },
+    { major: "production", sub: "script", date: "8/10", q: "대본 생성 단계가 진행되지 않아요", a: "대본 안의 기호를 정리하면 해결됩니다." },
+    { major: "production", sub: "script", date: "8/10", q: "3분 영상은 이미지가 몇 장 필요한가요", a: "대본의 장면 수에 따라 결정됩니다." },
+    { major: "production", sub: "script", date: "8/10", q: "마스코트는 어디까지 적용되나요", a: "모든 이미지에 일괄 적용되는 기능입니다." },
+
+    // 콘텐츠 제작 · 외부 API·업로드
+    { major: "production", sub: "api", date: "8/11", q: "영상 업로드 시 150MB 오류가 나요", a: "1씬이 2분을 넘으면 용량이 너무 커지니, 씬 길이와 용량 제한을 함께 확인하세요." },
+    { major: "production", sub: "api", date: "8/10", q: "Pexels API 키는 어떻게 발급받나요", a: "Pexels 사이트에서 구글 로그인 후 발급받을 수 있습니다." },
+
+    // AI·자동화 도구 · 클로드 사용
+    { major: "tools", sub: "claude", date: "8/12", q: "VSCode 확장 프로그램을 꼭 설치해야 하나요", a: "설치가 강제 사항은 아니며, 없어도 과제 진행이 가능합니다." },
+    { major: "tools", sub: "claude", date: "8/12", q: "클로드 사용량 한도는 어느 정도인가요", a: "200불 요금제도 한도를 초과할 수 있어, 주간 한도가 리셋될 때까지 기다려야 합니다." },
+    { major: "tools", sub: "claude", date: "8/10", q: "클로드 요금제 종류가 궁금해요", a: "20불·100불·200불 요금제가 있으며 사용량 비율은 1:5:20입니다." },
+    { major: "tools", sub: "claude", date: "8/10", q: "“끌로”, “끌코”가 뭔가요", a: "각각 클로드, 클로드 코딩을 부르는 애칭입니다." },
+
+    // AI·자동화 도구 · 이지워커·튜브워커
+    { major: "tools", sub: "worker", date: "8/11", q: "수강 종료 후에도 튜브워커를 쓸 수 있나요", a: "수강 종료 후에는 구독제로 전환되어 이용할 수 있습니다." },
+    { major: "tools", sub: "worker", date: "8/9", q: "이지워커는 어디에 쓰는 도구인가요", a: "이미지·영상 제작 비용을 절감해주는 확장 프로그램입니다." },
+    { major: "tools", sub: "worker", date: "8/9", q: "이지워커가 타임아웃돼요", a: "잠시 대기한 뒤 새로고침을 시도하면 됩니다." },
+
+    // 계정·운영·수익화 · 인증·계정
+    { major: "ops", sub: "auth", date: "8/12", q: "VPN을 써도 되나요", a: "VPN은 계정 차단의 주요 원인이라 사용을 금지하고 있습니다." },
+    { major: "ops", sub: "auth", date: "8/11", q: "인증코드를 다시 받고 싶어요", a: "시간이 지난 코드는 새로 발급받아야 합니다." },
+    { major: "ops", sub: "auth", date: "8/10", q: "인증코드 유효기간이 얼마나 되나요", a: "24시간 동안 유지되며, 지나면 재발급이 필요합니다." },
+
+    // 계정·운영·수익화 · 수익화·애드센스
+    { major: "ops", sub: "revenue", date: "8/11", q: "애드센스 승인은 얼마나 걸리나요", a: "보통 2~3주 예상되며, 알림 없이 조용히 승인되는 경우도 있습니다." },
+    { major: "ops", sub: "revenue", date: "8/10", q: "vidIQ 예상 수익, 믿을 수 있나요", a: "참고용으로만 보고 신뢰하지 않는 것이 좋습니다." },
+    { major: "ops", sub: "revenue", date: "8/5", q: "수익 창출 1차 신청은 언제 하나요", a: "조건을 달성하는 즉시 신청하며, 애드센스 승인까지 최대 30일이 걸릴 수 있습니다." },
+
+    // 계정·운영·수익화 · 강의 운영·공지
+    { major: "ops", sub: "course", date: "8/12", q: "강의 QnA가 너무 길어요", a: "정리본이 제공되어 빠르게 이해할 수 있습니다." },
+    { major: "ops", sub: "course", date: "8/10", q: "강의 진도는 어느 시점부터 제작에 들어가나요", a: "2강부터 본격적인 제작이 가능합니다." },
+    { major: "ops", sub: "course", date: "8/7", q: "점검 시간이 언제인가요", a: "매번 다르므로 공지를 확인해야 합니다." }
+  ];
+
+  var MAJORS = [
+    { key: "production", label: "콘텐츠 제작" },
+    { key: "tools", label: "AI·자동화 도구" },
+    { key: "ops", label: "계정·운영·수익화" }
+  ];
+
+  var SUBS = {
+    production: [
+      { key: "capcut", label: "캡컷 연동·오류" },
+      { key: "script", label: "대본·이미지·영상 제작" },
+      { key: "api", label: "외부 API·업로드" }
+    ],
+    tools: [
+      { key: "claude", label: "클로드 사용" },
+      { key: "worker", label: "이지워커·튜브워커" }
+    ],
+    ops: [
+      { key: "auth", label: "인증·계정" },
+      { key: "revenue", label: "수익화·애드센스" },
+      { key: "course", label: "강의 운영·공지" }
+    ]
+  };
+
+  var state = { major: "production", sub: "all" };
+
+  var majorTabsEl = document.querySelector(".tabs-major");
+  var subTabsEl = document.querySelector(".tabs-sub");
+  var listEl = document.querySelector(".list");
+  var panelEl = document.querySelector(".panel");
+
+  function countFor(major, sub) {
+    return DATA.filter(function (d) {
+      return d.major === major && (sub === "all" || d.sub === sub);
+    }).length;
+  }
+
+  function renderMajorTabs() {
+    majorTabsEl.innerHTML = "";
+    MAJORS.forEach(function (m) {
+      var btn = document.createElement("button");
+      btn.className = "tab-major";
+      btn.setAttribute("role", "tab");
+      btn.setAttribute("data-major", m.key);
+      btn.setAttribute("aria-selected", String(state.major === m.key));
+      btn.innerHTML = m.label + ' <span class="count mono">' + countFor(m.key, "all") + "</span>";
+      btn.addEventListener("click", function () {
+        state.major = m.key;
+        state.sub = "all";
+        renderAll();
+      });
+      majorTabsEl.appendChild(btn);
+    });
+  }
+
+  function renderSubTabs() {
+    subTabsEl.innerHTML = "";
+    panelEl.setAttribute("data-major", state.major);
+
+    var allBtn = document.createElement("button");
+    allBtn.className = "tab-sub";
+    allBtn.setAttribute("role", "tab");
+    allBtn.setAttribute("aria-selected", String(state.sub === "all"));
+    allBtn.innerHTML = '전체 <span class="count mono">' + countFor(state.major, "all") + "</span>";
+    allBtn.addEventListener("click", function () {
+      state.sub = "all";
+      renderAll();
+    });
+    subTabsEl.appendChild(allBtn);
+
+    SUBS[state.major].forEach(function (s) {
+      var btn = document.createElement("button");
+      btn.className = "tab-sub";
+      btn.setAttribute("role", "tab");
+      btn.setAttribute("aria-selected", String(state.sub === s.key));
+      btn.innerHTML = s.label + ' <span class="count mono">' + countFor(state.major, s.key) + "</span>";
+      btn.addEventListener("click", function () {
+        state.sub = s.key;
+        renderAll();
+      });
+      subTabsEl.appendChild(btn);
+    });
+  }
+
+  function subLabel(major, subKey) {
+    var found = SUBS[major].find(function (s) { return s.key === subKey; });
+    return found ? found.label : subKey;
+  }
+
+  function dateValue(dateStr) {
+    var parts = dateStr.split("/");
+    return parseInt(parts[0], 10) * 100 + parseInt(parts[1], 10);
+  }
+
+  function renderList() {
+    var items = DATA.filter(function (d) {
+      return d.major === state.major && (state.sub === "all" || d.sub === state.sub);
+    }).sort(function (a, b) {
+      return dateValue(b.date) - dateValue(a.date);
+    });
+
+    listEl.innerHTML = "";
+    if (items.length === 0) {
+      var empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent = "해당 카테고리에 항목이 없습니다.";
+      listEl.appendChild(empty);
+      return;
+    }
+
+    items.forEach(function (item) {
+      var card = document.createElement("article");
+      card.className = "card";
+      card.innerHTML =
+        '<div class="date mono">' + item.date + '</div>' +
+        '<div class="body">' +
+        '<span class="sub-chip">' + subLabel(item.major, item.sub) + '</span>' +
+        '<p class="q">' + item.q + '</p>' +
+        '<p class="a">' + item.a + '</p>' +
+        '</div>';
+      listEl.appendChild(card);
+    });
+  }
+
+  function renderAll() {
+    renderMajorTabs();
+    renderSubTabs();
+    renderList();
+  }
+
+  renderAll();
+</script>
