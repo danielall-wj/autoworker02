@@ -23,6 +23,9 @@
     --accent-3-tint: rgba(166, 116, 28, 0.10);
     --accent-3-tint-strong: rgba(166, 116, 28, 0.18);
 
+    --badge-new-bg: #C23B3B;
+    --badge-new-ink: #FFFFFF;
+
     --shadow: 0 1px 2px rgba(30, 36, 31, 0.06), 0 2px 8px rgba(30, 36, 31, 0.04);
   }
 
@@ -50,6 +53,9 @@
       --accent-3-tint: rgba(214, 169, 74, 0.14);
       --accent-3-tint-strong: rgba(214, 169, 74, 0.24);
 
+      --badge-new-bg: #E2726B;
+      --badge-new-ink: #241010;
+
       --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.25);
     }
   }
@@ -76,6 +82,9 @@
     --accent-3: #D6A94A;
     --accent-3-tint: rgba(214, 169, 74, 0.14);
     --accent-3-tint-strong: rgba(214, 169, 74, 0.24);
+
+    --badge-new-bg: #E2726B;
+    --badge-new-ink: #241010;
 
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.25);
   }
@@ -449,6 +458,20 @@
   .card[data-major="tools"] .sub-chip { background: var(--accent-2-tint); color: var(--accent-2); }
   .card[data-major="ops"] .sub-chip { background: var(--accent-3-tint); color: var(--accent-3); }
 
+  .new-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 2px 7px;
+    border-radius: 5px;
+    margin-left: 6px;
+    margin-bottom: 8px;
+    background: var(--badge-new-bg);
+    color: var(--badge-new-ink);
+    vertical-align: middle;
+  }
+
   .card .q {
     font-size: 15px;
     font-weight: 600;
@@ -632,7 +655,7 @@
   <header>
     <div class="header-row">
       <div class="header-text">
-        <div class="eyebrow"><span class="dot"></span>REFERENCE · 2026.08.05 – 08.12</div>
+        <div class="eyebrow"><span class="dot"></span>REFERENCE · 2026.08.05 – 08.13</div>
         <h1>오토워커 Q&amp;A 정리</h1>
         <p class="subtitle">오토워커 2기 사담방에 올라온 질의응답을 대분류 3개 · 하위 카테고리 8개로 정리했습니다. 상위 탭에서 영역을 고른 뒤, 하위 탭으로 더 좁혀 보세요. 각 항목은 최신 날짜순으로 정렬됩니다.</p>
         <a class="source-link" href="https://krroki.github.io/autoworker-digest/g/3ee7ded52cae4f10.html" target="_blank" rel="noopener">
@@ -658,17 +681,17 @@
   <div class="stat-block">
     <div class="stat-header">
       <span class="label">분류 비중</span>
-      <span class="total">총 <b class="mono">32</b>건</span>
+      <span class="total">총 <b class="mono">43</b>건</span>
     </div>
     <div class="stat-bar">
-      <span class="seg-production" style="width:50%"></span>
-      <span class="seg-tools" style="width:21.875%"></span>
-      <span class="seg-ops" style="width:28.125%"></span>
+      <span class="seg-production" style="width:39.53%"></span>
+      <span class="seg-tools" style="width:23.26%"></span>
+      <span class="seg-ops" style="width:37.21%"></span>
     </div>
     <div class="stat-legend">
-      <span class="item"><span class="swatch production"></span>콘텐츠 제작 <b class="mono">16</b></span>
-      <span class="item"><span class="swatch tools"></span>AI·자동화 도구 <b class="mono">7</b></span>
-      <span class="item"><span class="swatch ops"></span>계정·운영·수익화 <b class="mono">9</b></span>
+      <span class="item"><span class="swatch production"></span>콘텐츠 제작 <b class="mono">17</b></span>
+      <span class="item"><span class="swatch tools"></span>AI·자동화 도구 <b class="mono">10</b></span>
+      <span class="item"><span class="swatch ops"></span>계정·운영·수익화 <b class="mono">16</b></span>
     </div>
   </div>
 
@@ -714,29 +737,40 @@
     // 콘텐츠 제작 · 외부 API·업로드
     { major: "production", sub: "api", date: "8/11", q: "영상 업로드 시 150MB 오류가 나요", a: "1씬이 2분을 넘으면 용량이 너무 커지니, 씬 길이와 용량 제한을 함께 확인하세요." },
     { major: "production", sub: "api", date: "8/10", q: "Pexels API 키는 어떻게 발급받나요", a: "Pexels 사이트에서 구글 로그인 후 발급받을 수 있습니다." },
+    { major: "production", sub: "api", date: "8/13", q: "롱폼 영상을 태블릿이나 모바일로 업로드할 수 있나요", a: "가능은 하지만 번거로워서, 웹하드에 영상을 올렸다가 업로드용 기기에서 다시 받아 스튜디오에서 올려야 합니다." },
 
     // AI·자동화 도구 · 클로드 사용
+    { major: "tools", sub: "claude", date: "8/13", q: "VSCode에서 파일을 열면 “Git” 오류가 떠요", a: "Git이 설치되어 있지 않아 나는 오류로, git-scm.com에서 설치하면 해결됩니다." },
     { major: "tools", sub: "claude", date: "8/12", q: "VSCode 확장 프로그램을 꼭 설치해야 하나요", a: "설치가 강제 사항은 아니며, 없어도 과제 진행이 가능합니다." },
     { major: "tools", sub: "claude", date: "8/12", q: "클로드 사용량 한도는 어느 정도인가요", a: "200불 요금제도 한도를 초과할 수 있어, 주간 한도가 리셋될 때까지 기다려야 합니다." },
     { major: "tools", sub: "claude", date: "8/10", q: "클로드 요금제 종류가 궁금해요", a: "20불·100불·200불 요금제가 있으며 사용량 비율은 1:5:20입니다." },
     { major: "tools", sub: "claude", date: "8/10", q: "“끌로”, “끌코”가 뭔가요", a: "각각 클로드, 클로드 코딩을 부르는 애칭입니다." },
 
     // AI·자동화 도구 · 이지워커·튜브워커
+    { major: "tools", sub: "worker", date: "8/13", q: "튜브워커(맥스)는 하루에 영상을 몇 개까지 만들 수 있나요", a: "10개까지도 문제없이 가능합니다." },
+    { major: "tools", sub: "worker", date: "8/13", q: "튜브워커 인증번호가 오는 데 오래 걸리나요", a: "신청 후 “노씨데브”라는 이름으로 카톡 인증코드가 발송되며, 다소 시간이 걸릴 수 있으니 기다리면 됩니다." },
     { major: "tools", sub: "worker", date: "8/11", q: "수강 종료 후에도 튜브워커를 쓸 수 있나요", a: "수강 종료 후에는 구독제로 전환되어 이용할 수 있습니다." },
     { major: "tools", sub: "worker", date: "8/9", q: "이지워커는 어디에 쓰는 도구인가요", a: "이미지·영상 제작 비용을 절감해주는 확장 프로그램입니다." },
     { major: "tools", sub: "worker", date: "8/9", q: "이지워커가 타임아웃돼요", a: "잠시 대기한 뒤 새로고침을 시도하면 됩니다." },
 
     // 계정·운영·수익화 · 인증·계정
+    { major: "ops", sub: "auth", date: "8/13", q: "묵혀둔 채널은 삭제하고 새로 만드는 게 나을까요", a: "삭제하지 말고 비공개로 전환한 뒤 새 영상을 올리는 것이 좋습니다. 오래된 채널일수록 노출에 유리하고, 삭제하면 알고리즘을 다시 타기 어렵습니다." },
+    { major: "ops", sub: "auth", date: "8/13", q: "다른 수강생에게 내 채널명을 공개해도 되나요", a: "되도록 공개하지 않는 게 좋습니다. 잘못하면 알고리즘에 안 좋은 영향을 줄 수 있습니다." },
+    { major: "ops", sub: "auth", date: "8/13", q: "PC 두 대로 서로 다른 채널·애드센스를 운영해도 되나요", a: "PC를 나눠 쓰는 것 자체는 문제없지만, 하나의 애드센스에 여러 채널을 묶지 말고 새 애드센스를 만들 때는 기존과 분리된 기기를 쓰는 것이 안전합니다." },
+    { major: "ops", sub: "auth", date: "8/13", q: "사업자 등록을 하면 애드센스를 추가로 가질 수 있나요", a: "개인 애드센스 1개에 사업자(또는 법인) 애드센스를 더해 최대 2~3개까지 운영할 수 있습니다." },
+    { major: "ops", sub: "auth", date: "8/13", q: "애드센스 신청에 사업 실적 조건이 있나요", a: "실적은 보지 않으며, 세금 처리를 위해 사업자·법인 번호를 입력하는 용도일 뿐입니다." },
     { major: "ops", sub: "auth", date: "8/12", q: "VPN을 써도 되나요", a: "VPN은 계정 차단의 주요 원인이라 사용을 금지하고 있습니다." },
     { major: "ops", sub: "auth", date: "8/11", q: "인증코드를 다시 받고 싶어요", a: "시간이 지난 코드는 새로 발급받아야 합니다." },
     { major: "ops", sub: "auth", date: "8/10", q: "인증코드 유효기간이 얼마나 되나요", a: "24시간 동안 유지되며, 지나면 재발급이 필요합니다." },
 
     // 계정·운영·수익화 · 수익화·애드센스
+    { major: "ops", sub: "revenue", date: "8/13", q: "시청 지속률이 높으면 광고 수익도 올라가나요", a: "네, 주제에 따라 다르지만 시청 지속률이 높을수록 광고 단가 자체가 올라가는 경향이 있습니다." },
     { major: "ops", sub: "revenue", date: "8/11", q: "애드센스 승인은 얼마나 걸리나요", a: "보통 2~3주 예상되며, 알림 없이 조용히 승인되는 경우도 있습니다." },
     { major: "ops", sub: "revenue", date: "8/10", q: "vidIQ 예상 수익, 믿을 수 있나요", a: "참고용으로만 보고 신뢰하지 않는 것이 좋습니다." },
     { major: "ops", sub: "revenue", date: "8/5", q: "수익 창출 1차 신청은 언제 하나요", a: "조건을 달성하는 즉시 신청하며, 애드센스 승인까지 최대 30일이 걸릴 수 있습니다." },
 
     // 계정·운영·수익화 · 강의 운영·공지
+    { major: "ops", sub: "course", date: "8/13", q: "무료특강 다시보기는 어떻게 볼 수 있나요", a: "카페에 있는 무료 특강은 무료로 볼 수 있지만, 일요일 5시간 특강 다시보기는 결제가 필요하며 결제 후 채널톡으로 캡처를 보내면 확인해 줍니다." },
     { major: "ops", sub: "course", date: "8/12", q: "강의 QnA가 너무 길어요", a: "정리본이 제공되어 빠르게 이해할 수 있습니다." },
     { major: "ops", sub: "course", date: "8/10", q: "강의 진도는 어느 시점부터 제작에 들어가나요", a: "2강부터 본격적인 제작이 가능합니다." },
     { major: "ops", sub: "course", date: "8/7", q: "점검 시간이 언제인가요", a: "매번 다르므로 공지를 확인해야 합니다." }
@@ -769,6 +803,7 @@
     { major: "production", id: "pexels-api", term: "Pexels API", aliases: ["Pexels API"], desc: "무료 사진·영상을 자동으로 가져다 쓸 수 있게 해주는 '출입증' 같은 코드예요. 영상 제작 시 배경 이미지·클립을 자동으로 불러올 때 사용합니다." },
     { major: "production", id: "capcut-resources", term: "캡컷 Resources 폴더", aliases: ["Resources 폴더"], desc: "캡컷(CapCut)에서 영상 프로젝트를 만들면 자동으로 생기는 폴더로, 그 안에 이미지·음성 같은 원본 파일들이 저장돼요. 자동화 도구와 캡컷을 연결할 때 이 폴더 경로를 지정해줘야 합니다." },
     { major: "tools", id: "vscode", term: "VSCode", aliases: ["VSCode"], desc: "코드를 작성하고 편집할 때 쓰는 프로그램(에디터)이에요. 확장 프로그램을 설치하면 더 편하게 쓸 수 있지만, 없어도 과제 진행은 가능합니다." },
+    { major: "tools", id: "git", term: "Git", aliases: ["Git"], desc: "파일이나 코드의 변경 이력을 관리해주는 프로그램이에요. VSCode 등에서 특정 파일을 열려고 할 때 컴퓨터에 설치되어 있지 않으면 오류가 날 수 있어, git-scm.com에서 미리 설치해두면 좋습니다." },
     { major: "ops", id: "vpn", term: "VPN", aliases: ["VPN"], desc: "내 인터넷 연결을 다른 지역의 서버를 거쳐 우회시켜주는 프로그램이에요. 오토워커에서는 계정 차단의 주요 원인이라 사용을 금지하고 있습니다." },
     { major: "ops", id: "adsense", term: "애드센스 (Google AdSense)", aliases: ["애드센스"], desc: "내 유튜브 영상에 광고를 붙여 수익을 낼 수 있게 해주는 구글의 서비스예요. 심사를 통과해야 광고 수익이 발생하기 시작합니다." },
     { major: "ops", id: "vidiq", term: "vidIQ", aliases: ["vidIQ"], desc: "유튜브 영상의 예상 조회수·수익 등을 분석해주는 외부 도구예요." }
@@ -941,6 +976,15 @@
     return parseInt(parts[0], 10) * 100 + parseInt(parts[1], 10);
   }
 
+  function isNew(dateStr) {
+    var parts = dateStr.split("/");
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    var itemDate = new Date(today.getFullYear(), parseInt(parts[0], 10) - 1, parseInt(parts[1], 10));
+    var diffDays = Math.round((today - itemDate) / 86400000);
+    return diffDays >= 0 && diffDays <= 1;
+  }
+
   function matchingQaItems() {
     var query = state.query.trim().toLowerCase();
     var items;
@@ -979,10 +1023,11 @@
       card.className = "card";
       card.setAttribute("data-major", item.major);
       var chipText = query ? (majorLabel(item.major) + " · " + subLabel(item.major, item.sub)) : subLabel(item.major, item.sub);
+      var newBadge = isNew(item.date) ? '<span class="new-badge">NEW</span>' : '';
       card.innerHTML =
         '<div class="date mono">' + item.date + '</div>' +
         '<div class="body">' +
-        '<span class="sub-chip">' + chipText + '</span>' +
+        '<span class="sub-chip">' + chipText + '</span>' + newBadge +
         '<p class="q">' + linkify(item.q) + '</p>' +
         '<p class="a">' + linkify(item.a) + '</p>' +
         '</div>';
