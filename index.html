@@ -419,7 +419,69 @@
   [data-major="production"] .tab-sub[aria-selected="true"] { background: var(--accent); }
   [data-major="tools"] .tab-sub[aria-selected="true"] { background: var(--accent-2); }
   [data-major="ops"] .tab-sub[aria-selected="true"] { background: var(--accent-3); }
+  [data-major="all"] .tab-sub[aria-selected="true"] { background: var(--ink-900); }
   .tab-sub[aria-selected="true"] .count { color: inherit; opacity: 0.85; }
+
+  /* ---------- dashboard (전체 탭 요약 카드) ---------- */
+
+  .dashboard {
+    display: none;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 16px 20px 0;
+  }
+
+  .dashboard.is-active { display: grid; }
+
+  .dashboard-card {
+    appearance: none;
+    text-align: left;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    cursor: pointer;
+    font: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+
+  .dashboard-card:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+  .dashboard-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .dashboard-card .dc-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .dashboard-card[data-major="production"] .dc-head { color: var(--accent); }
+  .dashboard-card[data-major="tools"] .dc-head { color: var(--accent-2); }
+  .dashboard-card[data-major="ops"] .dc-head { color: var(--accent-3); }
+
+  .dashboard-card .dc-count {
+    font-family: ui-monospace, "SF Mono", monospace;
+    font-size: 12px;
+    color: var(--ink-500);
+  }
+
+  .dashboard-card .dc-latest {
+    font-size: 12.5px;
+    color: var(--ink-700);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  @media (max-width: 560px) {
+    .dashboard { grid-template-columns: 1fr; }
+  }
 
   /* ---------- cards ---------- */
 
@@ -712,6 +774,7 @@
   <nav class="tabs-major" role="tablist" aria-label="대분류"></nav>
   <section class="panel">
     <div class="tabs-sub" role="tablist" aria-label="하위 카테고리"></div>
+    <div class="dashboard"></div>
     <div class="list"></div>
   </section>
 
@@ -867,7 +930,7 @@
   var LAST_UPDATED = "2026-08-17";
   var LAST_UPDATED_NOTE = "원문 전체(8/4 ~ 8/17 오후 1:43 저장분) 반영 완료";
 
-  var state = { major: "production", sub: "all", query: "" };
+  var state = { major: "production", sub: "all", query: "", onlyNew: false };
 
   var majorTabsEl = document.querySelector(".tabs-major");
   var subTabsEl = document.querySelector(".tabs-sub");
@@ -967,6 +1030,7 @@
   });
 
   function countFor(major, sub) {
+    if (major === "all") return DATA.length;
     return DATA.filter(function (d) {
       return d.major === major && (sub === "all" || d.sub === sub);
     }).length;
@@ -974,6 +1038,20 @@
 
   function renderMajorTabs() {
     majorTabsEl.innerHTML = "";
+
+    var allBtn = document.createElement("button");
+    allBtn.className = "tab-major";
+    allBtn.setAttribute("role", "tab");
+    allBtn.setAttribute("data-major", "all");
+    allBtn.setAttribute("aria-selected", String(state.major === "all"));
+    allBtn.innerHTML = '전체 <span class="count mono">' + countFor("all", "all") + "</span>";
+    allBtn.addEventListener("click", function () {
+      state.major = "all";
+      state.sub = "all";
+      renderAll();
+    });
+    majorTabsEl.appendChild(allBtn);
+
     MAJORS.forEach(function (m) {
       var btn = document.createElement("button");
       btn.className = "tab-major";
@@ -993,6 +1071,21 @@
   function renderSubTabs() {
     subTabsEl.innerHTML = "";
     panelEl.setAttribute("data-major", state.major);
+
+    if (state.major === "all") {
+      var newOnlyCount = DATA.filter(function (d) { return isNew(d.date); }).length;
+      var newBtn = document.createElement("button");
+      newBtn.className = "tab-sub";
+      newBtn.setAttribute("role", "tab");
+      newBtn.setAttribute("aria-selected", String(state.onlyNew));
+      newBtn.innerHTML = "🔴 최신(1일 이내)만 보기 " + '<span class="count mono">' + newOnlyCount + "</span>";
+      newBtn.addEventListener("click", function () {
+        state.onlyNew = !state.onlyNew;
+        renderAll();
+      });
+      subTabsEl.appendChild(newBtn);
+      return;
+    }
 
     var allBtn = document.createElement("button");
     allBtn.className = "tab-sub";
@@ -1016,6 +1109,35 @@
         renderAll();
       });
       subTabsEl.appendChild(btn);
+    });
+  }
+
+  function renderDashboard() {
+    var dashEl = document.querySelector(".dashboard");
+    var show = !isSearching() && state.major === "all";
+    dashEl.classList.toggle("is-active", show);
+    if (!show) {
+      dashEl.innerHTML = "";
+      return;
+    }
+
+    dashEl.innerHTML = "";
+    MAJORS.forEach(function (m) {
+      var items = DATA.filter(function (d) { return d.major === m.key; });
+      var latest = items.slice().sort(function (a, b) { return dateValue(b.date) - dateValue(a.date); })[0];
+      var card = document.createElement("button");
+      card.type = "button";
+      card.className = "dashboard-card";
+      card.setAttribute("data-major", m.key);
+      card.innerHTML =
+        '<div class="dc-head"><span>' + m.label + '</span><span class="dc-count">' + items.length + '건</span></div>' +
+        (latest ? '<div class="dc-latest">최신: ' + latest.q + '</div>' : '');
+      card.addEventListener("click", function () {
+        state.major = m.key;
+        state.sub = "all";
+        renderAll();
+      });
+      dashEl.appendChild(card);
     });
   }
 
@@ -1095,6 +1217,8 @@
           subLabel(d.major, d.sub).toLowerCase().indexOf(query) !== -1 ||
           majorLabel(d.major).toLowerCase().indexOf(query) !== -1;
       });
+    } else if (state.major === "all") {
+      items = state.onlyNew ? DATA.filter(function (d) { return isNew(d.date); }) : DATA.slice();
     } else {
       items = DATA.filter(function (d) {
         return d.major === state.major && (state.sub === "all" || d.sub === state.sub);
@@ -1122,7 +1246,7 @@
       var card = document.createElement("article");
       card.className = "card";
       card.setAttribute("data-major", item.major);
-      var chipText = query ? (majorLabel(item.major) + " · " + subLabel(item.major, item.sub)) : subLabel(item.major, item.sub);
+      var chipText = (query || state.major === "all") ? (majorLabel(item.major) + " · " + subLabel(item.major, item.sub)) : subLabel(item.major, item.sub);
       var newBadge = isNew(item.date) ? '<span class="new-badge">NEW</span>' : '';
       card.innerHTML =
         '<div class="date mono">' + formatDateLabel(item.date) + '</div>' +
@@ -1241,6 +1365,7 @@
 
     renderMajorTabs();
     renderSubTabs();
+    renderDashboard();
     renderList();
     var termCount = renderGlossary();
 
