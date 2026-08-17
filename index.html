@@ -1,3 +1,4 @@
+<meta charset="UTF-8">
 <title>오토워커 Q&A 정리</title>
 <style>
   :root {
@@ -441,6 +442,19 @@
     font-size: 12px;
     color: var(--ink-500);
     padding-top: 2px;
+    line-height: 1.4;
+  }
+
+  .card .date .rel {
+    display: block;
+    font-weight: 600;
+    color: var(--ink-700, var(--ink-500));
+  }
+
+  .card .date .exact {
+    display: block;
+    font-size: 10.5px;
+    opacity: 0.75;
   }
 
   .card .body { min-width: 0; }
@@ -655,7 +669,7 @@
   <header>
     <div class="header-row">
       <div class="header-text">
-        <div class="eyebrow"><span class="dot"></span>REFERENCE · 2026.08.05 – 08.13</div>
+        <div class="eyebrow"><span class="dot"></span>REFERENCE · <span id="dateRange">2026.08.05 – 08.12</span></div>
         <h1>오토워커 Q&amp;A 정리</h1>
         <p class="subtitle">오토워커 2기 사담방에 올라온 질의응답을 대분류 3개 · 하위 카테고리 8개로 정리했습니다. 상위 탭에서 영역을 고른 뒤, 하위 탭으로 더 좁혀 보세요. 각 항목은 최신 날짜순으로 정렬됩니다.</p>
         <a class="source-link" href="https://krroki.github.io/autoworker-digest/g/3ee7ded52cae4f10.html" target="_blank" rel="noopener">
@@ -681,17 +695,17 @@
   <div class="stat-block">
     <div class="stat-header">
       <span class="label">분류 비중</span>
-      <span class="total">총 <b class="mono">43</b>건</span>
+      <span class="total">총 <b class="mono" id="statTotal">32</b>건</span>
     </div>
     <div class="stat-bar">
-      <span class="seg-production" style="width:39.53%"></span>
-      <span class="seg-tools" style="width:23.26%"></span>
-      <span class="seg-ops" style="width:37.21%"></span>
+      <span class="seg-production" id="segProduction" style="width:50%"></span>
+      <span class="seg-tools" id="segTools" style="width:21.875%"></span>
+      <span class="seg-ops" id="segOps" style="width:28.125%"></span>
     </div>
     <div class="stat-legend">
-      <span class="item"><span class="swatch production"></span>콘텐츠 제작 <b class="mono">17</b></span>
-      <span class="item"><span class="swatch tools"></span>AI·자동화 도구 <b class="mono">10</b></span>
-      <span class="item"><span class="swatch ops"></span>계정·운영·수익화 <b class="mono">16</b></span>
+      <span class="item"><span class="swatch production"></span>콘텐츠 제작 <b class="mono" id="countProduction">16</b></span>
+      <span class="item"><span class="swatch tools"></span>AI·자동화 도구 <b class="mono" id="countTools">7</b></span>
+      <span class="item"><span class="swatch ops"></span>계정·운영·수익화 <b class="mono" id="countOps">9</b></span>
     </div>
   </div>
 
@@ -711,7 +725,10 @@
     <p class="glossary-note">일부 기본 용어 설명은 Claude(AI)의 도움을 받아 작성되었습니다.</p>
   </section>
 
-  <footer>카테고리 분류는 자체 정리 기준이며, 원문은 날짜순으로 게시되어 있습니다.</footer>
+  <footer>
+    카테고리 분류는 자체 정리 기준이며, 원문은 날짜순으로 게시되어 있습니다.<br>
+    <span id="lastUpdated"></span>
+  </footer>
 </div>
 
 <script>
@@ -726,6 +743,15 @@
     { major: "production", sub: "capcut", date: "8/8", q: "캡컷에서 미디어 연결 오류가 나요", a: "png 파일을 드래프트 폴더로 복사하거나 미디어 연결 버튼을 사용하면 해결됩니다." },
 
     // 콘텐츠 제작 · 대본·이미지·영상 제작
+    { major: "production", sub: "script", date: "8/17 13:13", q: "튜브워커 크레딧으로 만든 이미지·영상에도 워터마크가 들어가나요", a: "아니요, 크레딧을 써서 만든 이미지·영상에는 워터마크가 들어가지 않습니다." },
+    { major: "production", sub: "script", date: "8/17 11:23", q: "예약 업로드로 올리면 고정댓글을 미리 못 다나요", a: "네, 예약 업로드는 고정댓글을 미리 걸어둘 수 없어서 실제 공개되는 시간에 맞춰 직접 달아주셔야 합니다." },
+    { major: "production", sub: "script", date: "8/16 00:04", q: "Pexels API 키 발급 시 사용목적란에 뭘 적나요", a: "내용은 상관없이 유튜브에 쓸 거라는 취지로 50자 이상만 채워 넣으면 됩니다." },
+    { major: "production", sub: "script", date: "8/15 23:37", q: "씬 만들 때 나오는 '재참여' 태그는 뭔가요", a: "해당 씬의 역할 표시로, 시청자를 다시 몰입시키는 구간이라는 의미입니다." },
+    { major: "production", sub: "script", date: "8/15 17:01", q: "마스코트(캐릭터)가 이미지에 잘 안 나와요", a: "튜브워커에서도 마스코트 등록과 사용 체크를 하고 스토리보드를 만들어야 프롬프트에 마스코트 내용이 들어갑니다." },
+    { major: "production", sub: "script", date: "8/14 12:31", q: "완성한 영상을 단계별로 다시 수정하고 싶어요", a: "내 스튜디오에서 기존 작업 영상의 '이어하기'를 누르면 되지만, 대본 변경은 안 되고 음성 생성 단계부터 가능합니다." },
+    { major: "production", sub: "script", date: "8/13 23:19", q: "워터마크 글씨를 지울 수 있나요", a: "이미지에서만 제거가 가능하고, 영상에서는 지울 수 없습니다." },
+    { major: "production", sub: "script", date: "8/13 21:13", q: "채널 그림체(화풍)를 바꾸고 싶어요", a: "튜브워커 홈 → 채널설정에서 화풍을 설정한 뒤, 생성 중인 영상의 현재 단계로 돌아오면 적용됩니다." },
+    { major: "production", sub: "script", date: "8/13 15:34", q: "클로드코드에서 Git 오류가 나요", a: "git-scm.com에서 Git을 설치해주셔야 합니다. 설치는 기본값 그대로 Next만 눌러도 됩니다." },
     { major: "production", sub: "script", date: "8/12", q: "캐릭터 실험 넣었더니 이상해요", a: "모든 장면에 등장하며 스타일이 불일치하고, 제거 설정이 까다롭습니다." },
     { major: "production", sub: "script", date: "8/11", q: "실사 스타일인데 공룡이 나와요", a: "공룡을 선택하지 않으면 다른 스타일로 진행할 수 있습니다." },
     { major: "production", sub: "script", date: "8/11", q: "이미지 프롬프트를 수정하고 싶어요", a: "커스텀 스타일로 지정해 flow에서 다시 작업할 수 있습니다." },
@@ -735,12 +761,21 @@
     { major: "production", sub: "script", date: "8/10", q: "마스코트는 어디까지 적용되나요", a: "모든 이미지에 일괄 적용되는 기능입니다." },
 
     // 콘텐츠 제작 · 외부 API·업로드
+    { major: "production", sub: "api", date: "8/17 12:37", q: "Pexels API는 구글 클라우드에서 발급받는 건가요", a: "아니요, pexels.com/api에서 발급받아야 합니다." },
+    { major: "production", sub: "api", date: "8/17 12:27", q: "Pexels API 키를 새로 발급받아 넣어도 계속 실패로 떠요", a: "발급 과정에서 문제가 있었을 가능성이 큽니다. 복사·붙여넣기 중 한두 글자가 잘리지 않았는지 확인해보세요." },
+    { major: "production", sub: "api", date: "8/17 12:11", q: "이미지 생성도 유료로 해야 하나요", a: "이미지 생성 자체는 유료입니다. 몇 장 정도 재미로 만들어보는 건 무료지만, 많이 생성하려면 비용이 듭니다. 플로우를 다계정으로 돌리면 결제 없이도 가능합니다." },
+    { major: "production", sub: "api", date: "8/16 17:25", q: "플로우 이미지 생성 한도는 언제 초기화되나요", a: "24시간 주기로 초기화되는 일일 제한입니다(클로드 세션의 5시간 한도와는 다릅니다). 막히면 여러 계정을 돌려가며 쓰는 걸 권장합니다." },
+    { major: "production", sub: "api", date: "8/15 14:03", q: "이미지를 영상으로 바꿔주는 그록그록은 뭔가요", a: "이지워커 영상생성 단계에 포함된 기능으로, 사용하려면 그록(Grok) 구독이 필요합니다." },
+    { major: "production", sub: "api", date: "8/15 13:31", q: "플로우(Flow)로 이미지 몇 장까지 무료로 만들 수 있나요", a: "정확한 상한은 없고 계정당 하루 최대 약 200장까지도 가능합니다. 서버 부하에 따라 그때그때 달라집니다." },
     { major: "production", sub: "api", date: "8/11", q: "영상 업로드 시 150MB 오류가 나요", a: "1씬이 2분을 넘으면 용량이 너무 커지니, 씬 길이와 용량 제한을 함께 확인하세요." },
     { major: "production", sub: "api", date: "8/10", q: "Pexels API 키는 어떻게 발급받나요", a: "Pexels 사이트에서 구글 로그인 후 발급받을 수 있습니다." },
     { major: "production", sub: "api", date: "8/13", q: "롱폼 영상을 태블릿이나 모바일로 업로드할 수 있나요", a: "가능은 하지만 번거로워서, 웹하드에 영상을 올렸다가 업로드용 기기에서 다시 받아 스튜디오에서 올려야 합니다." },
 
     // AI·자동화 도구 · 클로드 사용
-    { major: "tools", sub: "claude", date: "8/13", q: "VSCode에서 파일을 열면 “Git” 오류가 떠요", a: "Git이 설치되어 있지 않아 나는 오류로, git-scm.com에서 설치하면 해결됩니다." },
+    { major: "tools", sub: "claude", date: "8/15 23:41", q: "VS Code가 아니어도 원격으로 클로드코드를 볼 수 있나요", a: "VS Code가 아니라 클로드코드 자체가 리모트 컨트롤을 지원합니다." },
+    { major: "tools", sub: "claude", date: "8/14 22:27", q: "클로드 사용 한도는 언제 초기화되나요", a: "세션 한도는 5시간마다 초기화되고, 다음 세션에서 채팅을 시작하면 새 타이머가 작동합니다." },
+    { major: "tools", sub: "claude", date: "8/14 21:06", q: "클로드와 클로드코드는 결제가 따로인가요", a: "아니요, 클로드 결제를 하면 클로드코드도 함께 사용할 수 있습니다." },
+    { major: "tools", sub: "claude", date: "8/14 13:31", q: "슈퍼그록(Super Grok) 구독 혜택을 받는 팁이 있나요", a: "월 결제 후 구독을 해지하면 무료 연장 등 프로모션 오퍼가 뜨는 경우가 있습니다. 항상 뜨는 건 아닙니다." },
     { major: "tools", sub: "claude", date: "8/12", q: "VSCode 확장 프로그램을 꼭 설치해야 하나요", a: "설치가 강제 사항은 아니며, 없어도 과제 진행이 가능합니다." },
     { major: "tools", sub: "claude", date: "8/12", q: "클로드 사용량 한도는 어느 정도인가요", a: "200불 요금제도 한도를 초과할 수 있어, 주간 한도가 리셋될 때까지 기다려야 합니다." },
     { major: "tools", sub: "claude", date: "8/10", q: "클로드 요금제 종류가 궁금해요", a: "20불·100불·200불 요금제가 있으며 사용량 비율은 1:5:20입니다." },
@@ -748,12 +783,19 @@
 
     // AI·자동화 도구 · 이지워커·튜브워커
     { major: "tools", sub: "worker", date: "8/13", q: "튜브워커(맥스)는 하루에 영상을 몇 개까지 만들 수 있나요", a: "10개까지도 문제없이 가능합니다." },
-    { major: "tools", sub: "worker", date: "8/13", q: "튜브워커 인증번호가 오는 데 오래 걸리나요", a: "신청 후 “노씨데브”라는 이름으로 카톡 인증코드가 발송되며, 다소 시간이 걸릴 수 있으니 기다리면 됩니다." },
+    { major: "tools", sub: "worker", date: "8/16 03:29", q: "이지워커 사용법과 워터마크 리무버 사용법은 어디서 보나요", a: "카페에 설치·사용 가이드가 각각 올라와 있습니다." },
+    { major: "tools", sub: "worker", date: "8/16 14:19", q: "튜브워커와 이지워커는 비용 차이가 많이 나나요", a: "많이 납니다. 튜브워커 크레딧의 상당 부분이 이미지·영상 생성에 쓰이는데, 이지워커를 쓰면 그 비용을 크게 줄일 수 있습니다." },
+    { major: "tools", sub: "worker", date: "8/16 00:11", q: "이지워커는 어떤 브라우저에서 써야 하나요", a: "이지워커 확장 프로그램은 크롬에서만 동작합니다. 튜브워커 자체는 브라우저를 가리지 않습니다." },
+    { major: "tools", sub: "worker", date: "8/13 21:03", q: "튜브워커와 이지워커 둘 다 써야 하나요", a: "메인 도구는 튜브워커이고, 이지워커는 비용 절감을 위한 보조 프로그램입니다." },
+    { major: "tools", sub: "worker", date: "8/13 17:42", q: "튜브워커 인증코드가 안 와요", a: "신청 후 조금 기다리면 카톡으로 '노씨데브' 이름으로 발송됩니다." },
     { major: "tools", sub: "worker", date: "8/11", q: "수강 종료 후에도 튜브워커를 쓸 수 있나요", a: "수강 종료 후에는 구독제로 전환되어 이용할 수 있습니다." },
     { major: "tools", sub: "worker", date: "8/9", q: "이지워커는 어디에 쓰는 도구인가요", a: "이미지·영상 제작 비용을 절감해주는 확장 프로그램입니다." },
     { major: "tools", sub: "worker", date: "8/9", q: "이지워커가 타임아웃돼요", a: "잠시 대기한 뒤 새로고침을 시도하면 됩니다." },
 
     // 계정·운영·수익화 · 인증·계정
+    { major: "ops", sub: "auth", date: "8/17 13:00", q: "긴 영상을 올리면 유튜브가 너무 길다고 처리해줘요", a: "채널 인증이 안 됐을 가능성이 큽니다. 전화번호 인증 후 '고급 기능'에서 승인 상태를 확인해보세요." },
+    { major: "ops", sub: "auth", date: "8/15 23:32", q: "채널 얼굴 인증에 실패하면 어떻게 되나요", a: "회복까지 최소 두 달 정도 걸리며, 영상을 꾸준히 올리면 좀 더 빨리 풀리기도 합니다." },
+    { major: "ops", sub: "auth", date: "8/15 18:36", q: "유튜브 채널명을 나중에 바꿀 수 있나요", a: "14일마다 최대 2번까지 변경할 수 있습니다." },
     { major: "ops", sub: "auth", date: "8/13", q: "묵혀둔 채널은 삭제하고 새로 만드는 게 나을까요", a: "삭제하지 말고 비공개로 전환한 뒤 새 영상을 올리는 것이 좋습니다. 오래된 채널일수록 노출에 유리하고, 삭제하면 알고리즘을 다시 타기 어렵습니다." },
     { major: "ops", sub: "auth", date: "8/13", q: "다른 수강생에게 내 채널명을 공개해도 되나요", a: "되도록 공개하지 않는 게 좋습니다. 잘못하면 알고리즘에 안 좋은 영향을 줄 수 있습니다." },
     { major: "ops", sub: "auth", date: "8/13", q: "PC 두 대로 서로 다른 채널·애드센스를 운영해도 되나요", a: "PC를 나눠 쓰는 것 자체는 문제없지만, 하나의 애드센스에 여러 채널을 묶지 말고 새 애드센스를 만들 때는 기존과 분리된 기기를 쓰는 것이 안전합니다." },
@@ -764,12 +806,20 @@
     { major: "ops", sub: "auth", date: "8/10", q: "인증코드 유효기간이 얼마나 되나요", a: "24시간 동안 유지되며, 지나면 재발급이 필요합니다." },
 
     // 계정·운영·수익화 · 수익화·애드센스
+    { major: "ops", sub: "revenue", date: "8/17 12:58", q: "음성 생성(TTS)에 크레딧이 100 넘게 드는데 정상인가요", a: "생성+교정을 합치면 그 정도가 정상입니다(100크레딧≈1,300원 수준). 대신 이미지·영상 쪽 비용은 이지워커 같은 도구로 아낄 수 있게 제공하고 있습니다." },
+    { major: "ops", sub: "revenue", date: "8/17 10:50", q: "잘 나오던 영상 썸네일을 바꿨더니 조회수가 멈췄어요", a: "영상 정보를 바꾸면 유튜브가 다시 학습하면서 일시적으로 노출이 줄 수 있습니다. 지켜보면서 다음 영상을 준비하는 걸 권장합니다." },
+    { major: "ops", sub: "revenue", date: "8/16 13:08", q: "댓글에 대댓글을 꼭 달아야 하나요", a: "네, 댓글이 달리면 30분 이내에 대댓글을 달아주는 게 좋습니다. 알고리즘이 활동을 잘하는 채널로 판단해 노출을 더 줄 수 있고, 클릭률·시청지속률이 낮아도 참여도가 높으면 더 밀어줍니다." },
+    { major: "ops", sub: "revenue", date: "8/14 11:18", q: "썸네일 클릭률 6%대면 문제가 있는 건가요", a: "6%대는 평범한 수준입니다. 8% 이상으로 끌어올리는 걸 목표로 개선해보세요." },
     { major: "ops", sub: "revenue", date: "8/13", q: "시청 지속률이 높으면 광고 수익도 올라가나요", a: "네, 주제에 따라 다르지만 시청 지속률이 높을수록 광고 단가 자체가 올라가는 경향이 있습니다." },
     { major: "ops", sub: "revenue", date: "8/11", q: "애드센스 승인은 얼마나 걸리나요", a: "보통 2~3주 예상되며, 알림 없이 조용히 승인되는 경우도 있습니다." },
     { major: "ops", sub: "revenue", date: "8/10", q: "vidIQ 예상 수익, 믿을 수 있나요", a: "참고용으로만 보고 신뢰하지 않는 것이 좋습니다." },
     { major: "ops", sub: "revenue", date: "8/5", q: "수익 창출 1차 신청은 언제 하나요", a: "조건을 달성하는 즉시 신청하며, 애드센스 승인까지 최대 30일이 걸릴 수 있습니다." },
 
     // 계정·운영·수익화 · 강의 운영·공지
+    { major: "ops", sub: "course", date: "8/17 13:06", q: "채널 알고리즘 세팅(계정 웜업)은 꼭 해야 하나요", a: "새 계정으로 관심 카테고리 영상을 매일 시청·구독·좋아요 해두는 방식인데, 채널을 키우는 데 의무적으로 해야 하는 건 아닙니다." },
+    { major: "ops", sub: "course", date: "8/17 10:45", q: "새 채널에서 초반에 영상을 몇 개씩 몰아 올려도 되나요", a: "처음엔 채널력이 부족해서 한 채널에 3~4개를 한꺼번에 올리기보다, 3~4개 채널에 각각 1개씩 나눠 올리는 걸 권장합니다." },
+    { major: "ops", sub: "course", date: "8/16 14:12", q: "영상에 AI로 만들었다는 표시(라벨)를 꼭 해야 하나요", a: "의무는 아니지만 하는 걸 추천합니다. 안 하면 나중에 강제로 체크당하는 경우가 많아서, 처음부터 표시해두는 게 낫습니다." },
+    { major: "ops", sub: "course", date: "8/14 17:18", q: "강의를 실시간으로 못 들으면 어떻게 하나요", a: "모든 강의는 다음 날 카페에 VOD로 올라옵니다." },
     { major: "ops", sub: "course", date: "8/13", q: "무료특강 다시보기는 어떻게 볼 수 있나요", a: "카페에 있는 무료 특강은 무료로 볼 수 있지만, 일요일 5시간 특강 다시보기는 결제가 필요하며 결제 후 채널톡으로 캡처를 보내면 확인해 줍니다." },
     { major: "ops", sub: "course", date: "8/12", q: "강의 QnA가 너무 길어요", a: "정리본이 제공되어 빠르게 이해할 수 있습니다." },
     { major: "ops", sub: "course", date: "8/10", q: "강의 진도는 어느 시점부터 제작에 들어가나요", a: "2강부터 본격적인 제작이 가능합니다." },
@@ -802,12 +852,20 @@
   var GLOSSARY = [
     { major: "production", id: "pexels-api", term: "Pexels API", aliases: ["Pexels API"], desc: "무료 사진·영상을 자동으로 가져다 쓸 수 있게 해주는 '출입증' 같은 코드예요. 영상 제작 시 배경 이미지·클립을 자동으로 불러올 때 사용합니다." },
     { major: "production", id: "capcut-resources", term: "캡컷 Resources 폴더", aliases: ["Resources 폴더"], desc: "캡컷(CapCut)에서 영상 프로젝트를 만들면 자동으로 생기는 폴더로, 그 안에 이미지·음성 같은 원본 파일들이 저장돼요. 자동화 도구와 캡컷을 연결할 때 이 폴더 경로를 지정해줘야 합니다." },
+    { major: "production", id: "git", term: "Git", aliases: ["Git", "깃"], desc: "코드 변경 이력을 관리해주는 프로그램이에요. 클로드코드 사용 중 관련 오류가 나면 git-scm.com에서 설치하면 대부분 해결됩니다." },
+    { major: "production", id: "flow", term: "플로우 (Flow)", aliases: ["플로우", "Flow"], desc: "구글의 이미지 생성 도구예요. 무료 계정 하나로 하루 최대 약 200장까지 이미지를 만들 수 있고, 생성 가능 수량은 서버 상황에 따라 달라집니다." },
+    { major: "production", id: "grokgrok", term: "그록그록", aliases: ["그록그록"], desc: "이지워커 안에서 그록(Grok)을 이용해 이미지를 영상으로 바꿔주는 기능이에요. 사용하려면 그록 구독이 필요합니다." },
     { major: "tools", id: "vscode", term: "VSCode", aliases: ["VSCode"], desc: "코드를 작성하고 편집할 때 쓰는 프로그램(에디터)이에요. 확장 프로그램을 설치하면 더 편하게 쓸 수 있지만, 없어도 과제 진행은 가능합니다." },
-    { major: "tools", id: "git", term: "Git", aliases: ["Git"], desc: "파일이나 코드의 변경 이력을 관리해주는 프로그램이에요. VSCode 등에서 특정 파일을 열려고 할 때 컴퓨터에 설치되어 있지 않으면 오류가 날 수 있어, git-scm.com에서 미리 설치해두면 좋습니다." },
+    { major: "tools", id: "session-limit", term: "세션 한도", aliases: ["세션 한도", "세션한도"], desc: "클로드 사용량 제한 단위예요. 5시간마다 초기화되며, 한도에 걸리면 다음 세션이 시작될 때까지 기다렸다가 이어서 작업하면 됩니다." },
     { major: "ops", id: "vpn", term: "VPN", aliases: ["VPN"], desc: "내 인터넷 연결을 다른 지역의 서버를 거쳐 우회시켜주는 프로그램이에요. 오토워커에서는 계정 차단의 주요 원인이라 사용을 금지하고 있습니다." },
     { major: "ops", id: "adsense", term: "애드센스 (Google AdSense)", aliases: ["애드센스"], desc: "내 유튜브 영상에 광고를 붙여 수익을 낼 수 있게 해주는 구글의 서비스예요. 심사를 통과해야 광고 수익이 발생하기 시작합니다." },
     { major: "ops", id: "vidiq", term: "vidIQ", aliases: ["vidIQ"], desc: "유튜브 영상의 예상 조회수·수익 등을 분석해주는 외부 도구예요." }
   ];
+
+  // 이 사이트가 원문(카톡 사담방) 내용을 어디까지 확인해서 반영했는지 기록해두는 값입니다.
+  // 다음에 내용을 추가할 때는 이 두 값만 갱신하면 됩니다.
+  var LAST_UPDATED = "2026-08-17";
+  var LAST_UPDATED_NOTE = "원문 전체(8/4 ~ 8/17 오후 1:43 저장분) 반영 완료";
 
   var state = { major: "production", sub: "all", query: "" };
 
@@ -971,9 +1029,51 @@
     return found ? found.label : major;
   }
 
+  function parseDateStr(dateStr) {
+    // "8/12" (date only, legacy) or "8/13 16:07" (date + time, HH:MM 24h)
+    var spaceIdx = dateStr.indexOf(" ");
+    var datePart = spaceIdx === -1 ? dateStr : dateStr.slice(0, spaceIdx);
+    var timePart = spaceIdx === -1 ? null : dateStr.slice(spaceIdx + 1);
+    var dp = datePart.split("/");
+    var hour = 0, minute = 0;
+    if (timePart) {
+      var tp = timePart.split(":");
+      hour = parseInt(tp[0], 10) || 0;
+      minute = parseInt(tp[1], 10) || 0;
+    }
+    return {
+      month: parseInt(dp[0], 10),
+      day: parseInt(dp[1], 10),
+      hour: hour,
+      minute: minute,
+      hasTime: !!timePart
+    };
+  }
+
   function dateValue(dateStr) {
-    var parts = dateStr.split("/");
-    return parseInt(parts[0], 10) * 100 + parseInt(parts[1], 10);
+    var d = parseDateStr(dateStr);
+    return ((d.month * 100 + d.day) * 10000) + (d.hour * 100 + d.minute);
+  }
+
+  function relativeDayLabel(d) {
+    var now = new Date();
+    var itemDate = new Date(now.getFullYear(), d.month - 1, d.day);
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var diffDays = Math.round((today - itemDate) / 86400000);
+    if (diffDays === 0) return "오늘";
+    if (diffDays === 1) return "어제";
+    if (diffDays > 1) return diffDays + "일 전";
+    if (diffDays === -1) return "내일";
+    return (-diffDays) + "일 후";
+  }
+
+  function formatDateLabel(dateStr) {
+    var d = parseDateStr(dateStr);
+    if (!d.hasTime) return dateStr;
+    return (
+      '<span class="rel">' + relativeDayLabel(d) + '</span>' +
+      '<span class="exact">' + dateStr + '</span>'
+    );
   }
 
   function isNew(dateStr) {
@@ -1025,7 +1125,7 @@
       var chipText = query ? (majorLabel(item.major) + " · " + subLabel(item.major, item.sub)) : subLabel(item.major, item.sub);
       var newBadge = isNew(item.date) ? '<span class="new-badge">NEW</span>' : '';
       card.innerHTML =
-        '<div class="date mono">' + item.date + '</div>' +
+        '<div class="date mono">' + formatDateLabel(item.date) + '</div>' +
         '<div class="body">' +
         '<span class="sub-chip">' + chipText + '</span>' + newBadge +
         '<p class="q">' + linkify(item.q) + '</p>' +
@@ -1090,6 +1190,49 @@
     return totalShown;
   }
 
+  function updateMeta() {
+    // 헤더의 REFERENCE 날짜 범위, 분류 비중, 하단 최종 업데이트 표기를
+    // DATA 배열 기준으로 자동 계산합니다. 항목을 추가/삭제해도 손으로
+    // 고칠 필요가 없습니다.
+    var minVal = Infinity, maxVal = -Infinity, minD = null, maxD = null;
+    var counts = { production: 0, tools: 0, ops: 0 };
+    DATA.forEach(function (item) {
+      counts[item.major] = (counts[item.major] || 0) + 1;
+      var v = dateValue(item.date);
+      if (v < minVal) { minVal = v; minD = parseDateStr(item.date); }
+      if (v > maxVal) { maxVal = v; maxD = parseDateStr(item.date); }
+    });
+
+    var rangeEl = document.getElementById("dateRange");
+    if (rangeEl && minD && maxD) {
+      var pad2 = function (n) { return n < 10 ? "0" + n : "" + n; };
+      rangeEl.textContent =
+        "2026." + pad2(minD.month) + "." + pad2(minD.day) +
+        " – " + pad2(maxD.month) + "." + pad2(maxD.day);
+    }
+
+    var total = DATA.length;
+    var totalEl = document.getElementById("statTotal");
+    if (totalEl) totalEl.textContent = total;
+
+    [["production", "segProduction", "countProduction"], ["tools", "segTools", "countTools"], ["ops", "segOps", "countOps"]]
+      .forEach(function (row) {
+        var key = row[0], segId = row[1], countId = row[2];
+        var n = counts[key] || 0;
+        var pct = total ? (n / total * 100) : 0;
+        var segEl = document.getElementById(segId);
+        if (segEl) segEl.style.width = pct + "%";
+        var countEl = document.getElementById(countId);
+        if (countEl) countEl.textContent = n;
+      });
+
+    var lastUpdatedEl = document.getElementById("lastUpdated");
+    if (lastUpdatedEl) {
+      lastUpdatedEl.textContent = "최종 업데이트: " + LAST_UPDATED +
+        (LAST_UPDATED_NOTE ? " (" + LAST_UPDATED_NOTE + ")" : "");
+    }
+  }
+
   function renderAll() {
     var searching = isSearching();
 
@@ -1110,5 +1253,6 @@
     }
   }
 
+  updateMeta();
   renderAll();
 </script>
